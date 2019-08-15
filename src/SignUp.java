@@ -22,8 +22,8 @@ public class SignUp extends javax.swing.JDialog {
      */
     public SignUp() {
         initComponents();
-       this.setLocationRelativeTo(null);
-      this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+        this.setLocationRelativeTo(null);
+        this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
     }
 
     /**
@@ -248,8 +248,12 @@ public class SignUp extends javax.swing.JDialog {
             try {
                 ArrayList data = getDataToSave();
                 db_operation db = new db_operation();
-                db.addDonorInformtaion(data);
-                JOptionPane.showMessageDialog(this, "Donor added successfully");
+                String result = db.addDonorInformtaion(data);
+                if (result.equals("Success")) {
+                    JOptionPane.showMessageDialog(this, "Donor added successfully");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Donor added Fail");
+                }
                 this.dispose();
 
             } catch (ParseException ex) {
@@ -300,120 +304,103 @@ public class SignUp extends javax.swing.JDialog {
         data.add(this.First_Name1.getText());
         data.add(this.Last_Name1.getText());
         data.add(this.Address1.getText());
-        String i=(this.Phone1.getText());
-        int j=i.length();
-        if (j!=10)
-        {
+        String i = (this.Phone1.getText());
+        int j = i.length();
+        if (j != 10) {
             JOptionPane.showMessageDialog(this, "Invalid Phone", "Error", HEIGHT);
         }
         data.add(this.Phone1.getText());
-      String a=this.Age1.getText();
-      int b=Integer.parseInt( a);
-      if (b>55||b<18)
+        String a = this.Age1.getText();
+        int b = Integer.parseInt(a);
+        if (b > 55 || b < 18) {
+            JOptionPane.showMessageDialog(this, "Invalid Age!!You canot donate blood", "Error", HEIGHT);
 
-      {
-          JOptionPane.showMessageDialog(this, "Invalid Age!!You canot donate blood", "Error", HEIGHT);
-          
-          
-      }
-      else{
-        data.add(this.Age1.getText());
-      }
+        } else {
+            data.add(this.Age1.getText());
+        }
         if (female.isSelected()) {
             data.add("Female");
-        } else{
+        } else {
             data.add("Male");
-  
+
         }
         data.add(bg.getSelectedItem().toString());
-        int w=Integer.parseInt(this.wt.getText());
-      
-      if (w<40)
+        int w = Integer.parseInt(this.wt.getText());
 
-      {
-          JOptionPane.showMessageDialog(this, "Invalid Weight!!You canot donate blood", "Error", HEIGHT);
-          
-          
-      }
-      else{
-      data.add(this.wt.getText());
-      }
-        
-        
-       
-      
+        if (w < 40) {
+            JOptionPane.showMessageDialog(this, "Invalid Weight!!You canot donate blood", "Error", HEIGHT);
+
+        } else {
+            data.add(this.wt.getText());
+        }
+
         return data;
 
     }
-  
- public boolean isNumeric(String a) {
+
+    public boolean isNumeric(String a) {
         return a.matches("-?\\d+(\\.\\d+)?");
     }
 
     public boolean isAlphabet(String name) {
         return name.matches("[a-zA-Z]+");
     }
+
     public boolean isValidData() {
         boolean result = true;
         if (this.First_Name1.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Enter the First Name", "Error", HEIGHT);
             // TODO add your handling code here:
-        }
-        else if(!isAlphabet(this.First_Name1.getText())){
+        } else if (!isAlphabet(this.First_Name1.getText())) {
             JOptionPane.showMessageDialog(this, "Invalid first name", "Error", HEIGHT); // TODO add your handling code here:
             result = false;
-            
-        }
-            else if (this.Last_Name1.getText().isEmpty()) {
+
+        } else if (this.Last_Name1.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Enter the last Name", "Error", HEIGHT); // TODO add your handling code here:
             result = false;
-            
-        }else if(!isAlphabet(this.Last_Name1.getText())){
+
+        } else if (!isAlphabet(this.Last_Name1.getText())) {
             JOptionPane.showMessageDialog(this, "Invalid last name", "Error", HEIGHT); // TODO add your handling code here:
             result = false;
-         
-        }
-            else if (this.Address1.getText().isEmpty()) {
+
+        } else if (this.Address1.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Enter the address", "Error", HEIGHT); // TODO add your handling code here:
             result = false;
-            
-        } else if(!isAlphabet(this.Address1.getText())){
+
+        } else if (!isAlphabet(this.Address1.getText())) {
             JOptionPane.showMessageDialog(this, "Invalid Address", "Error", HEIGHT); // TODO add your handling code here:
             result = false;
-           
-        }
-            else if (this.Phone1.getText().isEmpty()) {
+
+        } else if (this.Phone1.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Enter the Phone no", "Error", HEIGHT); // TODO add your handling code here:
             result = false;
-           
-        } else if(!isNumeric(this.Phone1.getText())){
+
+        } else if (!isNumeric(this.Phone1.getText())) {
             JOptionPane.showMessageDialog(this, "Invalid Phone Number", "Error", HEIGHT); // TODO add your handling code here:
             result = false;
-            
-        }
-            else if (this.Age1.getText().isEmpty()) {
+
+        } else if (this.Age1.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Enter the Age", "Error", HEIGHT); // TODO add your handling code here:
             result = false;
-            
-        }else if(!isNumeric(this.Age1.getText())){
+
+        } else if (!isNumeric(this.Age1.getText())) {
             JOptionPane.showMessageDialog(this, "Invalid Age", "Error", HEIGHT); // TODO add your handling code here:
             result = false;
             ;
-        }
-            else if (!this.female.isSelected() && !this.male.isSelected()) {
+        } else if (!this.female.isSelected() && !this.male.isSelected()) {
             JOptionPane.showMessageDialog(this, "Please Enter the gender", "Error", HEIGHT); // TODO add your handling code here:
             result = false;
-            
+
         } else if (this.wt.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Enter the weight ", "Error", HEIGHT); // TODO add your handling code here:
             result = false;
-            
-        }else if(!isNumeric(this.wt.getText())){
+
+        } else if (!isNumeric(this.wt.getText())) {
             JOptionPane.showMessageDialog(this, "Invalid weight", "Error", HEIGHT); // TODO add your handling code here:
             result = false;
-          
+
         }
-      
+
         return result;
 
     }
@@ -421,7 +408,6 @@ public class SignUp extends javax.swing.JDialog {
     /**
      * @param args the command line arguments
      */
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Address;
     private javax.swing.JTextField Address1;

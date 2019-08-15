@@ -72,7 +72,7 @@ public class db_Operation1 {
         System.out.println("a" + id + "a");
         String SQL = "DELETE FROM \"donor\" WHERE id=" + id + ";";
         db_connect dc = new db_connect();
-        Connection conn=dc.connectDatabase();
+        Connection conn = dc.connectDatabase();
         try {
             Statement s = conn.createStatement();
             System.out.println("hello");
@@ -82,23 +82,4 @@ public class db_Operation1 {
         }
     }
 
-    public ResultSet searchDonorInformation(String id) {
-        db_connect dbcon = new db_connect();
-        PreparedStatement ps = null;
-        Connection conn = null;
-        ResultSet rs = null;
-        conn = dbcon.connectDatabase();
-        String SQL = "select * from student where ID like ?";
-        try {
-            ps = conn.prepareStatement(SQL);
-//            ps.setString(1,fname+"%");
-            rs = ps.executeQuery();
-
-        } catch (SQLException ex) {
-            //Logger.getLogger(NewView.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return rs;
-
-    }
 }

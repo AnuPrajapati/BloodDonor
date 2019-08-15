@@ -43,7 +43,8 @@ public class db_operation {
         }
         return rs;
     }
-  public ResultSet viewSingleDonorInformation(String id){
+
+    public ResultSet viewSingleDonorInformation(String id) {
         db_connect dbcon = new db_connect();
         PreparedStatement ps = null;  //to execute the query
         ResultSet rs = null;
@@ -52,37 +53,42 @@ public class db_operation {
         try {
             ps = conn.prepareStatement(SQL);
             ps.setInt(1, Integer.parseInt(id)); //start from ?(1) so 1
-            rs = ps.executeQuery(); 
-            
+            rs = ps.executeQuery();
+
         } catch (SQLException ex) {
             Logger.getLogger(db_operation.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return rs;
-  }
-    public void addDonorInformtaion(ArrayList dataToSave) throws ParseException {
+    }
+
+    public String addDonorInformtaion(ArrayList dataToSave) throws ParseException {
         Connection conn = null;
         db_connect dbc = new db_connect();
 
         PreparedStatement ps = null;
         conn = dbc.connectDatabase();
-        String SQL = "insert into \"donor\"(first_name,last_name,address,phone_no,age,gender,blood_group,weight) values (?,?,?,?,?,?,?,?);";
+        String SQL = "insert into donor(first_name,last_name,address,phone_no,age,gender,blood_group,weight) values (?,?,?,?,?,?,?,?)";
 
         try {
             ps = conn.prepareStatement(SQL);
             ps.setString(1, dataToSave.get(0).toString());
             ps.setString(2, dataToSave.get(1).toString());
             ps.setString(3, dataToSave.get(2).toString());
-            ps.setLong(4, Long.parseLong(dataToSave.get(3).toString()));
+            ps.setString(4, dataToSave.get(3).toString());
             ps.setInt(5, Integer.parseInt(dataToSave.get(4).toString()));
             ps.setString(6, dataToSave.get(5).toString());
             ps.setString(7, dataToSave.get(6).toString());
-             ps.setInt(8, Integer.parseInt(dataToSave.get(7).toString()));
-            ps.executeUpdate();
-            
+            ps.setInt(8, Integer.parseInt(dataToSave.get(7).toString()));
+            int i = ps.executeUpdate();
+            if (i > 0) {
+                return "Success";
+            }
+
         } catch (SQLException ex) {
-            System.out.println("Add Student SQL Error" + ex);
+            System.out.println("Add Donor SQL Error" + ex);
         }
+        return "Fail";
     }
 
     public ResultSet searchDonorInformation(String bg) {
@@ -103,42 +109,37 @@ public class db_operation {
         return rs;
 
     }
-  
-   public void UpdateDatatoStudentTable(ArrayList data,int id) {
+
+    public void UpdateDatatoStudentTable(ArrayList data, int id) {
         db_connect dc = new db_connect();
         Connection conn = dc.connectDatabase();
-         String SQL = "update donor set first_name=?,last_name=?,address=?,phone_no=?,"
-                +"age=?,gender=?,blood_group=?,weight=? where id=?";
+        String SQL = "update donor set first_name=?,last_name=?,address=?,phone_no=?,"
+                + "age=?,gender=?,blood_group=?,weight=? where id=?";
         try {
-            
+
             PreparedStatement ps = conn.prepareStatement(SQL);
             ps.setString(1, data.get(0).toString());
-            
+
             ps.setString(2, data.get(1).toString());
             ps.setString(3, data.get(2).toString());
-           ps.setLong(4, Long.parseLong(data.get(3).toString()));
+            ps.setLong(4, Long.parseLong(data.get(3).toString()));
             ps.setInt(5, Integer.parseInt(data.get(4).toString()));
             ps.setString(6, data.get(5).toString());
-                      
 
-               ps.setString(7, data.get(6).toString());
-                            System.out.println("anudj");
+            ps.setString(7, data.get(6).toString());
 
             ps.setInt(8, Integer.parseInt(data.get(7).toString()));
-            
-            
-           System.out.println("anuj");
+
             ps.setInt(9, id);
-            System.out.println("anu");
+
             ps.executeUpdate();
             JOptionPane.showMessageDialog(new javax.swing.JDialog(), "Record Updated");
         } catch (SQLException ex) {
             System.out.println("Prepare Error::" + ex.toString());
-        } 
-        dc.closeDBConnection();
         }
-        
-     
+        dc.closeDBConnection();
+    }
+
     public ResultSet deleteAllDonorInformation(String k) {
         db_connect dbcon = new db_connect();
         PreparedStatement ps = null;
